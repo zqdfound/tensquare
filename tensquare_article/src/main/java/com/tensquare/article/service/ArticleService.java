@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -108,6 +109,8 @@ public class ArticleService {
 			article = articleDao.findById(id).get();
 			//存入缓存
 			redisTemplate.opsForValue().set("article_"+id,article);
+				//测试：设置缓存失效时间10小时
+			//redisTemplate.opsForValue().set("article_"+id,article,10, TimeUnit.HOURS);
 		}
 		return article;
 	}
@@ -126,6 +129,8 @@ public class ArticleService {
 	 * @param article
 	 */
 	public void update(Article article) {
+		//清除缓存
+		redisTemplate.delete("article_"+article.getId());
 		articleDao.save(article);
 	}
 
