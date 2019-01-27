@@ -1,0 +1,5 @@
+server:
+  port: 8098
+spring:
+  rabbitmq:
+    host: 192.168.178.129
